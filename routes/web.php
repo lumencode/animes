@@ -14,8 +14,8 @@
 use App\Activity;
 use Illuminate\Http\Request;
 
-Route::get('actividades', function () {
-    return Activity::all();
+Route::get('actividades/{assigned}', function ($assigned) {
+    return Activity::where('assigned', $assigned)->get();
 });
 
 Route::post('actividades/crear', function (Request $request) {
