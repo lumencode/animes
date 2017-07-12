@@ -11,16 +11,25 @@
 |
 */
 
-use App\Anime;
+use App\Activity;
+use Illuminate\Http\Request;
 
-Route::get('animes', function(){
-    return Anime::all();
+Route::get('actividades', function () {
+    return Activity::all();
 });
 
-Route::get('animes/{id}', function($id){
-    return Anime::find($id);
+Route::post('actividades/crear', function (Request $request) {
+
+    Activity::create($request->all());
+
+    return "ok";
 });
 
-Route::get('animes/{id}/episodios', function($id){
-    return Anime::with('episodes')->find($id);
+Route::post('actividades/{id}/done', function ($id) {
+
+    $model = Activity::find($id);
+    $model->done = true;
+    $model->save();
+
+    return "ok";
 });
