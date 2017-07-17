@@ -39,7 +39,7 @@ Route::get('tareas/{assigned}', function ($assigned) {
         });
 });
 
-Route::ger('tareas/{id}', function ($id) {
+Route::get('tareas/{id}/mostrar', function ($id) {
 
     $item = Activity::find($id);
 
