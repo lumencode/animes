@@ -26,7 +26,17 @@ Route::post('actividades/crear', function (Request $request) {
 });
 
 Route::get('tareas/{assigned}', function ($assigned) {
-    return Activity::where('assigned', $assigned)->get();
+    return Activity::where('assigned', $assigned)
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id'          => $item->id,
+                'assigned'    => $item->assigned,
+                'date'        => $item->date,
+                'favorite'    => $item->done,
+                'description' => $item->activity,
+            ];
+        });
 });
 
 Route::post('tareas/crear', function (Request $request) {
@@ -36,7 +46,7 @@ Route::post('tareas/crear', function (Request $request) {
     return "ok";
 });
 
-Route::post('tareas/{id}/favoritas', function ($id) {
+Route::post('tareas/{id}/favorito', function ($id) {
 
     $model = Activity::find($id);
     $model->done = !$model->done;
