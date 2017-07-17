@@ -39,9 +39,24 @@ Route::get('tareas/{assigned}', function ($assigned) {
         });
 });
 
-Route::post('tareas/crear', function (Request $request) {
+Route::ger('tareas/{id}', function ($id) {
 
-    Activity::create($request->all());
+    $item = Activity::find($id);
+
+    return [
+        'id'          => $item->id,
+        'assigned'    => $item->assigned,
+        'date'        => $item->date,
+        'favorite'    => $item->done,
+        'description' => $item->activity,
+    ];
+});
+
+Route::post('tareas/{id}/favorito', function ($id) {
+
+    $model = Activity::find($id);
+    $model->done = !$model->done;
+    $model->save();
 
     return "ok";
 });
