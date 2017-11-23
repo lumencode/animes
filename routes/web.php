@@ -25,11 +25,16 @@ Route::post('actividades/crear', function (Request $request) {
     return "ok";
 });
 
-Route::post('tareas/crear', function (Request $request) {
+Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
 
-    Activity::create($request->all());
 
-    return "ok";
+    Activity::create([
+        'date' => $request->get('date'),
+        'activity' => $request->get('activity'),
+        'assigned' => $codigo,
+    ]);
+
+    return true;
 });
 
 Route::get('tareas/{assigned}', function ($assigned) {
