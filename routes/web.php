@@ -34,7 +34,7 @@ Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
         'assigned' => $codigo,
     ]);
 
-    return true;
+    return json(true);
 });
 
 Route::get('tareas/{assigned}', function ($assigned) {
