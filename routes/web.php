@@ -86,15 +86,15 @@ Route::post('actividades/{id}/done', function ($id) {
 
 Route::post('{code}/anime/favorite', function (Request $request, $code) {
 
-    $anime = $request->input('id');
+    $id = $request->input('id');
     $anime = Favorite::where('codigo', $code)
-        ->where('anime_id', $anime)
+        ->where('anime_id', $id)
         ->first();
 
     if($anime == null)
         Favorite::create([
             'codigo' => $code,
-            'anime_id' => $anime
+            'anime_id' => $id
         ]);
     else
         $anime->delete();
