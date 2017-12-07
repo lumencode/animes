@@ -8,4 +8,6 @@ class Favorite extends Model
 {
     protected $table = 'favorites';
 
+    protected $guarded = [];
+
 }
