@@ -107,5 +107,5 @@ Route::get('{code}/animes', function ($code) {
 });
 
 Route::get('animes', function () {
-   return json(Anime::all());
+   return Anime::all();
 });
