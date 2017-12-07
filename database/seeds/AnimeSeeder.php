@@ -2,6 +2,7 @@
 
 use App\Anime;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AnimeSeeder extends Seeder
 {
@@ -12,8 +13,8 @@ class AnimeSeeder extends Seeder
      */
     public function run()
     {
-        BD::table('episodes')->truncate();
-        BD::table('animes')->truncate();
+        DB::table('episodes')->truncate();
+        DB::table('animes')->truncate();
 
         Anime::create([
             'name' => 'Bleach',
