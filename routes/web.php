@@ -12,6 +12,7 @@
 */
 
 use App\Activity;
+use App\Favorite;
 use Illuminate\Http\Request;
 
 Route::get('actividades/{assigned}', function ($assigned) {
@@ -73,8 +74,6 @@ Route::post('tareas/{id}/favorito', function ($id) {
     return "ok";
 });
 
-
-
 Route::post('actividades/{id}/done', function ($id) {
 
     $model = Activity::find($id);
@@ -82,4 +81,31 @@ Route::post('actividades/{id}/done', function ($id) {
     $model->save();
 
     return "ok";
+});
+
+Route::post('{code}/anime/favorite', function ($code) {
+
+    $anime = Input::get('id');
+    $anime = Favorite::where('codigo, $code')
+        ->where('anime_id', $anime);
+
+    if($anime == null)
+        Favorite::create([
+            'codigo' => $code,
+            'anime_id' => $anime
+        ]);
+    else
+        $anime->delete();
+
+    return json(true);
+});
+
+Route::get('{code}/animes', function ($code) {
+    $ids = Favorite::where('codigo', $code)->get('id');
+
+    return Anime::whereIn('id', $ids)->get();
+});
+
+Route::get('animes', function () {
+   return json(Anime::all());
 });
