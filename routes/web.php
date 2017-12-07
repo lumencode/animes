@@ -98,7 +98,7 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
     else
         $anime->delete();
 
-    return json(true);
+    return "true";
 });
 
 Route::get('{code}/animes', function ($code) {
