@@ -102,7 +102,7 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
 });
 
 Route::get('{code}/animes', function ($code) {
-    $ids = Favorite::where('codigo', $code)->get('id');
+    $ids = Favorite::where('codigo', $code)->get('id')->pluck('id');
 
     return Anime::whereIn('id', $ids)->get();
 });
