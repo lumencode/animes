@@ -88,7 +88,8 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
 
     $anime = $request->input('id');
     $anime = Favorite::where('codigo', $code)
-        ->where('anime_id', $anime);
+        ->where('anime_id', $anime)
+        ->first();
 
     if($anime == null)
         Favorite::create([
