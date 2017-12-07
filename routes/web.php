@@ -12,6 +12,7 @@
 */
 
 use App\Activity;
+use App\Anime;
 use App\Favorite;
 use Illuminate\Http\Request;
 
