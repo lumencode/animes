@@ -86,7 +86,7 @@ Route::post('actividades/{id}/done', function ($id) {
 
 Route::post('{code}/anime/favorite', function ($code) {
 
-    $anime = Input::get('id');
+    $anime = Request::get('id');
     $anime = Favorite::where('codigo, $code')
         ->where('anime_id', $anime);
 
