@@ -107,8 +107,8 @@ Route::get('{code}/animes', function ($code) {
     $ids = Favorite::where('codigo', $code)
         ->get()
         ->pluck('id');
-    return $ids;
-    //return Anime::whereIn('id', $ids)->get();
+
+    return Anime::whereIn('id', $ids)->get();
 });
 
 Route::get('animes', function () {
