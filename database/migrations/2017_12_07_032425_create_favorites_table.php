@@ -13,12 +13,12 @@ class CreateFavoritesTable extends Migration
      */
     public function up()
     {
-//        Schema::create('favorites', function (Blueprint $table) {
-//            $table->increments('id');
-//            $table->string('codigo');
-//            $table->integer('anime_id');
-//            $table->timestamps();
-//        });
+        Schema::create('favorites', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('codigo');
+            $table->integer('anime_id');
+            $table->timestamps();
+        });
     }
 
     /**
