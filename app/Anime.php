@@ -14,12 +14,12 @@ class Anime extends Model
         return $this->hasMany(Episode::class);
     }
 
-    public function getImagenAttribute($value){
-        return URL::to('img/' . $value . '.jpg');
-    }
+//    public function getImagenAttribute($value){
+//        return URL::to('img/' . $value . '.jpg');
+//    }
 
-    public function setFirstNameAttribute($value)
-    {
-        $this->attributes['first_name'] = strtolower($value);
-    }
+//    public function setFirstNameAttribute($value)
+//    {
+//        $this->attributes['first_name'] = strtolower($value);
+//    }
 }
