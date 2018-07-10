@@ -30,13 +30,13 @@ Route::post('actividades/crear', function (Request $request) {
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
 
 
-    Activity::create([
+    $model = Activity::create([
         'date' => $request->get('date'),
         'activity' => $request->get('activity'),
         'assigned' => $codigo,
     ]);
 
-    return json(true);
+    return json($model);
 });
 
 Route::get('tareas/{assigned}', function ($assigned) {
