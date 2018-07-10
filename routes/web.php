@@ -103,6 +103,11 @@ Route::get('{code}/animes', function ($code) {
     return Anime::whereIn('id', $ids)->get();
 });
 
-Route::get('animes', function () {
-   return Anime::all();
+Route::get('animes', function (Request $request) {
+   $query = Anime::query();
+
+   if($request->has('query'))
+       $query->where('nombre', 'like', "%{$request->query}%");
+
+   return $query->get();
 });
