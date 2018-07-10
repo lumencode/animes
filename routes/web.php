@@ -107,7 +107,7 @@ Route::get('animes', function (Request $request) {
    $query = Anime::query();
 
    if($request->has('query')) {
-       $q = $request->query;
+       $q = $request->get('query');
        $query->where('nombre', 'like', "%{$q}%");
    }
 
