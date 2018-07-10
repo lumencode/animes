@@ -16,15 +16,8 @@ use App\Anime;
 use App\Favorite;
 use Illuminate\Http\Request;
 
-Route::get('actividades/{assigned}', function ($assigned) {
+Route::get('tareas/{assigned}', function ($assigned) {
     return Activity::where('assigned', $assigned)->get();
-});
-
-Route::post('actividades/crear', function (Request $request) {
-
-    Activity::create($request->all());
-
-    return "ok";
 });
 
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
