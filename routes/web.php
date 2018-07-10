@@ -106,8 +106,10 @@ Route::get('{code}/animes', function ($code) {
 Route::get('animes', function (Request $request) {
    $query = Anime::query();
 
-   if($request->has('query'))
-       $query->where('nombre', 'like', "%{$request->query}%");
+   if($request->has('query')) {
+       $q = $request->query;
+       $query->where('nombre', 'like', "%{$q}%");
+   }
 
    return $query->get();
 });
