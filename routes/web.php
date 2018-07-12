@@ -16,30 +16,30 @@ use App\Anime;
 use App\Favorite;
 use Illuminate\Http\Request;
 
-Route::get('tareas/{assigned}', function ($assigned) {
-    return Activity::where('assigned', $assigned)->get();
-});
-
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
 
     $model = Activity::create([
-        'date' => $request->get('date'),
-        'activity' => $request->get('activity'),
+        'date'     => $request->get('date'),
+        'activity' => $request->get('description'),
         'assigned' => $codigo,
     ]);
 
     return $model;
 });
 
-Route::get('tareas/{assigned}', function ($assigned) {
+Route::get('tareas/{assigned}', function ($assigned, Request $request) {
+
+    $query = $request->get('query');
+
     return Activity::where('assigned', $assigned)
+        ->where('activity', 'like', "%{$query}%")
         ->get()
         ->map(function ($item) {
             return [
                 'id'          => $item->id,
                 'assigned'    => $item->assigned,
                 'date'        => $item->date,
-                'favorite'    => $item->done,
+                'isDone'      => $item->done,
                 'description' => $item->activity,
             ];
         });
@@ -73,7 +73,7 @@ Route::post('actividades/{id}/done', function ($id) {
     $model->done = true;
     $model->save();
 
-    return "ok";
+    return $model;
 });
 
 Route::post('{code}/anime/favorite', function (Request $request, $code) {
@@ -84,9 +84,9 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
         ->where('anime_id', $id)
         ->first();
 
-    if($anime == null)
+    if ($anime == null)
         Favorite::create([
-            'codigo' => $code,
+            'codigo'   => $code,
             'anime_id' => $id
         ]);
     else
@@ -104,12 +104,12 @@ Route::get('{code}/animes', function ($code) {
 });
 
 Route::get('animes', function (Request $request) {
-   $query = Anime::query();
+    $query = Anime::query();
 
-   if($request->has('query')) {
-       $q = $request->get('query');
-       $query->where('nombre', 'like', "%{$q}%");
-   }
+    if ($request->has('query')) {
+        $q = $request->get('query');
+        $query->where('nombre', 'like', "%{$q}%");
+    }
 
-   return $query->get();
+    return $query->get();
 });
