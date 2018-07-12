@@ -67,7 +67,7 @@ Route::post('tareas/{id}/favorito', function ($id) {
     return "ok";
 });
 
-Route::post('actividades/{id}/done', function ($id) {
+Route::post('tareas/{id}/done', function ($id) {
 
     $model = Activity::find($id);
     $model->done = true;
