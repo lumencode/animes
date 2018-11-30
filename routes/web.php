@@ -143,7 +143,7 @@ Route::post('pokemons/{code}/crear', function(Request $request, $code) {
         'codigo'     => $code,
         'nombre' => $request->get('nombre'),
         'tipo' => $request->get('tipo'),
-        'url_imagen' => $request->get('url_imagen')
+        'url_imagen' => $request->get('url_imagen'),
         'esta_atrapado' => false
     ]);
 
