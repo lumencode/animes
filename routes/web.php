@@ -14,6 +14,7 @@
 use App\Activity;
 use App\Anime;
 use App\Favorite;
+use App\Pokemon;
 use Illuminate\Http\Request;
 
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
@@ -84,21 +85,23 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
         ->where('anime_id', $id)
         ->first();
 
-    if ($anime == null)
+    if ($anime == null) {
         Favorite::create([
             'codigo'   => $code,
             'anime_id' => $id
         ]);
-    else
+        return "favorito creado";
+    }
+    else {
         $anime->delete();
-
-    return "true";
+        return "favorito eliminado";
+    }
 });
 
 Route::get('{code}/animes', function ($code) {
     $ids = Favorite::where('codigo', $code)
         ->get()
-        ->pluck('id');
+        ->pluck('anime_id');
 
     return Anime::whereIn('id', $ids)->get();
 });
@@ -112,4 +115,52 @@ Route::get('animes', function (Request $request) {
     }
 
     return $query->get();
+});
+
+
+
+Route::get('pokemons/{code}', function(Request $request, $code) {
+
+    $query = Pokemon::where('codigo', $code);
+
+    return $query->get();
+
+});
+
+
+Route::get('pokemons/{code}/atrapados', function(Request $request, $code) {
+
+    $query = Pokemon::where('codigo', $code)->where('esta_atrapado', true);
+
+    return $query->get();
+
+});
+
+
+Route::post('pokemons/{code}/crear', function(Request $request, $code) {
+
+    $model = Pokemon::create([
+        'codigo'     => $code,
+        'nombre' => $request->get('nombre'),
+        'tipo' => $request->get('tipo'),
+        'url_imagen' => $request->get('url_imagen')
+        'esta_atrapado' => false
+    ]);
+
+    $model->save();
+
+    return $model;
+
+});
+
+
+Route::post('pokemons/{code}/atrapar/{pokemon}', function(Request $request, $code, $pokemon) {
+
+    $model = Pokemon::find($pokemon);
+    $model->esta_atrapado = !$model->esta_atrapado;
+
+    $model->save();
+
+    return $model;
+
 });
