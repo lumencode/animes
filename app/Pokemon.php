@@ -9,4 +9,8 @@ class Pokemon extends Model
     public $table = 'pokemon';
     public $guarded = [];
     public $timestamps = false;
+
+    public $casts = [
+        "esta_atrapado" => "boolean"
+    ];
 }
