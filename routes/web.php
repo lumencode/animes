@@ -177,9 +177,11 @@ Route::get('{code}/frutas', function(Request $request, $code) {
 
 Route::post('{codigo}/frutas/crear', function(Request $request, $codigo) {
 
-    $model = Fruta::create($request->all());
-    $model->codigo = $codigo;
-    $model->save();
+    $model = Fruta::create([
+        'nombre' => $request->get('nombre'),
+        'vitaminas' => $request->get('vitaminas'),
+        'codigo' => $codigo
+    ]);
 
 
     return $model;
