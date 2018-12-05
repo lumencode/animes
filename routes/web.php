@@ -197,4 +197,6 @@ Route::post('{code}/frutas/{fruta_id}/megusta', function(Request $request, $code
 
     $model->save();
 
+    return $model;
+
 });
