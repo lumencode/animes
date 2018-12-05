@@ -180,7 +180,8 @@ Route::post('{codigo}/frutas/crear', function(Request $request, $codigo) {
     $model = Fruta::create([
         'nombre' => $request->get('nombre'),
         'vitaminas' => $request->get('vitaminas'),
-        'codigo' => $codigo
+        'codigo' => $codigo,
+        'me_gusta' => false
     ]);
 
 
