@@ -14,6 +14,7 @@
 use App\Activity;
 use App\Anime;
 use App\Favorite;
+use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 
@@ -162,5 +163,34 @@ Route::post('pokemons/{code}/atrapar/{pokemon}', function(Request $request, $cod
     $model->save();
 
     return $model;
+
+});
+
+
+Route::get('{code}/frutas', function(Request $request, $code) {
+
+    $query = Fruta::where('codigo', $code);
+
+    return $query->get();
+
+});
+
+Route::post('{code}/frutas/crear', function(Request $request, $code) {
+
+    $model = Fruta::create($request->all());
+    $model->save();
+
+
+    return $model;
+
+});
+
+Route::post('{code}/frutas/{fruta_id}/megusta', function(Request $request, $code, $fruta_id) {
+
+    $model = Fruta::find($fruta_id);
+
+    $model->me_gusta = !$model->me_gusta;
+
+    $model->save();
 
 });
