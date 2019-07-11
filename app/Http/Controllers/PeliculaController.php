@@ -7,12 +7,12 @@ use App\Pelicula;
 
 class PeliculaController extends Controller
 {
-    public function index($code)
+    public function index($codigo)
     {
-        return Pelicula::where('codigo', $code)->get();
+        return Pelicula::where('codigo', $codigo)->get();
     }
 
-    public function store(Request $request, $code)
+    public function store(Request $request, $codigo)
     {
         $this->validate($request, [
             'name' => 'required',
@@ -23,7 +23,7 @@ class PeliculaController extends Controller
 
         $model = Pelicula::create([
             'nombre' => $request->get('nombre'),
-            'codigo' => $code,
+            'codigo' => $codigo,
             'fecha_de_estreno' => $request->get('fecha_de_estreno'),
             'visitas' => $request->get('visitas'),
             'imagen_url' => $request->get('imagen_url'),
