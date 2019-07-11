@@ -17,16 +17,15 @@ use App\Favorite;
 use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
-use Dotenv\Validator;
 use App\Pelicula;
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
-    // Validator::vali($request, [
-    //     'name' => 'required',
-    //     'fecha_de_estreno' => 'required',
-    //     'visitas' => 'required',
-    //     'imagen_url' => 'required',
-    // ]);
+    $request->validate($request, [
+        'name' => 'required',
+        'fecha_de_estreno' => 'required',
+        'visitas' => 'required',
+        'imagen_url' => 'required',
+    ]);
 
     $model = Pelicula::create([
         'nombre' => $request->get('nombre'),
