@@ -18,14 +18,15 @@ use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 use App\Pelicula;
+use Illuminate\Support\Facades\Validator;
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
-    $request->validate([
+    Validator::make($request->all(), [
         'name' => 'required',
         'fecha_de_estreno' => 'required',
         'visitas' => 'required',
         'imagen_url' => 'required',
-    ]);
+    ])->validate();
 
     $model = Pelicula::create([
         'nombre' => $request->get('nombre'),
