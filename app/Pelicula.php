@@ -8,4 +8,5 @@ class Pelicula extends Model
 {
     protected $table = 'peliculas';
     protected $guarded = [];
+    public $timestamps = false;
 }
