@@ -12,7 +12,7 @@ class PeliculaController extends Controller
         return Pelicula::where('codigo', $code)->get();
     }
 
-    public function store($code, Request $request)
+    public function store(Request $request, $code)
     {
         $this->validate($request, [
             'name' => 'required',
