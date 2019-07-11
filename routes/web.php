@@ -175,6 +175,6 @@ Route::post('{code}/frutas/{fruta_id}/megusta', function (Request $request, $cod
     return $model;
 });
 
-Route::get('{code}/peliculas', 'PeliculaController@index');
-
 Route::post('{code}/peliculas/crear', 'PeliculaController@store');
+
+Route::get('{code}/peliculas', 'PeliculaController@index');
