@@ -17,8 +17,26 @@ use App\Favorite;
 use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
+use Dotenv\Validator;
 
-Route::post('peliculas/{codigo}/crear', 'PeliculaController@store');
+Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
+    // Validator::vali($request, [
+    //     'name' => 'required',
+    //     'fecha_de_estreno' => 'required',
+    //     'visitas' => 'required',
+    //     'imagen_url' => 'required',
+    // ]);
+
+    $model = Pelicula::create([
+        'nombre' => $request->get('nombre'),
+        'codigo' => $codigo,
+        'fecha_de_estreno' => $request->get('fecha_de_estreno'),
+        'visitas' => $request->get('visitas'),
+        'imagen_url' => $request->get('imagen_url'),
+    ]);
+
+    return $model;
+});
 
 Route::get('peliculas/{codigo}', 'PeliculaController@index');
 
