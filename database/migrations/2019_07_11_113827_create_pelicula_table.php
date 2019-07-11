@@ -15,7 +15,7 @@ class CreatePeliculaTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('fecha_de_estreno');
-            $table->int('vistas');
+            $table->integer('vistas');
             $table->string('codigo');
             $table->string('imagen_url', 1000);
         });
