@@ -36,7 +36,7 @@ Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
         'nombre' => $request->get('nombre'),
         'codigo' => $codigo,
         'fecha_de_estreno' => $request->get('fecha_de_estreno'),
-        'visitas' => $request->get('visitas'),
+        'vistas' => $request->get('vistas'),
         'imagen_url' => $request->get('imagen_url'),
     ]);
 
