@@ -18,6 +18,10 @@ use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 
+Route::post('peliculas/{code}/crear', 'PeliculaController@store');
+
+Route::get('peliculas/{code}', 'PeliculaController@index');
+
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
     $model = Activity::create([
         'date' => $request->get('date'),
@@ -174,7 +178,3 @@ Route::post('{code}/frutas/{fruta_id}/megusta', function (Request $request, $cod
 
     return $model;
 });
-
-Route::post('{code}/peliculas/crear', 'PeliculaController@store');
-
-Route::get('{code}/peliculas', 'PeliculaController@index');
