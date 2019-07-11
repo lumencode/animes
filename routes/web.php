@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use App\Pelicula;
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
-    $request->validate($request, [
+    $request->validate([
         'name' => 'required',
         'fecha_de_estreno' => 'required',
         'visitas' => 'required',
