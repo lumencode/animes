@@ -18,6 +18,7 @@ use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 use Dotenv\Validator;
+use App\Pelicula;
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
     // Validator::vali($request, [
