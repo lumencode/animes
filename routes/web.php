@@ -45,7 +45,7 @@ Route::get('{codigo}/libros', function ($codigo) {
             'fecha_publicacion' => $item->fecha_publicacion,
             'url_imagen' => $item->url_imagen,
         ];
-    });
+    })->get();
 });
 
 Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
@@ -57,7 +57,7 @@ Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
             'fecha_publicacion' => $item->fecha_publicacion,
             'url_imagen' => $item->url_imagen,
         ];
-    });
+    })->first();
 });
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
