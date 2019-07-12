@@ -38,7 +38,7 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
 });
 
 Route::get('{codigo}/libros', function ($codigo) {
-    return Libro::where('codigo', '$codigo')->get()->map(function ($item) {
+    return Libro::where('codigo', $codigo)->get()->map(function ($item) {
         return [
             'id' => $item->id,
             'titulo' => $item->titulo,
@@ -49,7 +49,7 @@ Route::get('{codigo}/libros', function ($codigo) {
 });
 
 Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
-    return Libro::where('codigo', '$codigo')->first();
+    return Libro::where('id', $id)->first();
 });
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
