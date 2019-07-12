@@ -22,7 +22,7 @@ use App\Libro;
 
 Route::post('{codigo}/libros', function (Request $request, $codigo) {
     if ($request->get('titulo') == '') {
-        abort(420);
+        abort(400);
     }
 
     $model = Libro::create([
