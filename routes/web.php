@@ -38,26 +38,18 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
 });
 
 Route::get('{codigo}/libros', function ($codigo) {
-    return Libro::where('codigo', '$codigo')->map(function ($item) {
+    return Libro::where('codigo', '$codigo')->get()->map(function ($item) {
         return [
             'id' => $item->id,
             'titulo' => $item->titulo,
             'fecha_publicacion' => $item->fecha_publicacion,
             'url_imagen' => $item->url_imagen,
         ];
-    })->get();
+    });
 });
 
 Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
-    return Libro::where('codigo', '$codigo')->map(function ($item) {
-        return [
-            'id' => $item->id,
-            'titulo' => $item->titulo,
-            'resumen' => $item->resumen,
-            'fecha_publicacion' => $item->fecha_publicacion,
-            'url_imagen' => $item->url_imagen,
-        ];
-    })->first();
+    return Libro::where('codigo', '$codigo')->first();
 });
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
