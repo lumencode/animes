@@ -18,16 +18,49 @@ use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 use App\Pelicula;
-use Illuminate\Support\Facades\Validator;
+use App\Libro;
+
+Route::post('{codigo}/libros', function (Request $request, $codigo) {
+    if ($request->get('titulo') == '') {
+        abort(420);
+    }
+
+    $model = Libro::create([
+        'codigo' => $codigo,
+        'resumen' => $request->get('resumen'),
+        'url_imagen' => $request->get('url_imagen'),
+        'titulo' => $request->get('titulo'),
+        'autor' => $request->get('autor'),
+        'fecha_publicacion' => $request->get('fecha_publicacion'),
+    ]);
+
+    return $model;
+});
+
+Route::get('{codigo}/libros', function ($codigo) {
+    return Libro::where('codigo', '$codigo')->map(function ($item) {
+        return [
+            'id' => $item->id,
+            'titulo' => $item->titulo,
+            'fecha_publicacion' => $item->fecha_publicacion,
+            'url_imagen' => $item->url_imagen,
+        ];
+    });
+});
+
+Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
+    return Libro::where('codigo', '$codigo')->map(function ($item) {
+        return [
+            'id' => $item->id,
+            'titulo' => $item->titulo,
+            'resumen' => $item->resumen,
+            'fecha_publicacion' => $item->fecha_publicacion,
+            'url_imagen' => $item->url_imagen,
+        ];
+    });
+});
 
 Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
-    // Validator::make($request->all(), [
-    //     'name' => 'required',
-    //     'fecha_de_estreno' => 'required',
-    //     'visitas' => 'required',
-    //     'imagen_url' => 'required',
-    // ])->validate();
-
     if ($request->get('nombre') == '') {
         abort(402);
     }
