@@ -13,12 +13,14 @@
 
 use App\Activity;
 use App\Anime;
+use App\Entrenador;
 use App\Favorite;
 use App\Fruta;
 use App\Pokemon;
 use Illuminate\Http\Request;
 use App\Pelicula;
 use App\Libro;
+use Intervention\Image\Image;
 
 Route::post('{codigo}/libros', function (Request $request, $codigo) {
     if ($request->get('titulo') == '') {
@@ -26,11 +28,11 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
     }
 
     $model = Libro::create([
-        'codigo' => $codigo,
-        'resumen' => $request->get('resumen'),
-        'url_imagen' => $request->get('url_imagen'),
-        'titulo' => $request->get('titulo'),
-        'autor' => $request->get('autor'),
+        'codigo'            => $codigo,
+        'resumen'           => $request->get('resumen'),
+        'url_imagen'        => $request->get('url_imagen'),
+        'titulo'            => $request->get('titulo'),
+        'autor'             => $request->get('autor'),
         'fecha_publicacion' => $request->get('fecha_publicacion'),
     ]);
 
@@ -40,10 +42,10 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
 Route::get('{codigo}/libros', function ($codigo) {
     return Libro::where('codigo', $codigo)->get()->map(function ($item) {
         return [
-            'id' => $item->id,
-            'titulo' => $item->titulo,
+            'id'                => $item->id,
+            'titulo'            => $item->titulo,
             'fecha_publicacion' => $item->fecha_publicacion,
-            'url_imagen' => $item->url_imagen,
+            'url_imagen'        => $item->url_imagen,
         ];
     });
 });
@@ -58,11 +60,11 @@ Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
     }
 
     $model = Pelicula::create([
-        'nombre' => $request->get('nombre'),
-        'codigo' => $codigo,
+        'nombre'           => $request->get('nombre'),
+        'codigo'           => $codigo,
         'fecha_de_estreno' => $request->get('fecha_de_estreno'),
-        'vistas' => $request->get('vistas'),
-        'imagen_url' => $request->get('imagen_url'),
+        'vistas'           => $request->get('vistas'),
+        'imagen_url'       => $request->get('imagen_url'),
     ]);
 
     return $model;
@@ -72,7 +74,7 @@ Route::get('peliculas/{codigo}', 'PeliculaController@index');
 
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
     $model = Activity::create([
-        'date' => $request->get('date'),
+        'date'     => $request->get('date'),
         'activity' => $request->get('description'),
         'assigned' => $codigo,
     ]);
@@ -88,10 +90,10 @@ Route::get('tareas/{assigned}', function ($assigned, Request $request) {
         ->get()
         ->map(function ($item) {
             return [
-                'id' => $item->id,
-                'assigned' => $item->assigned,
-                'date' => $item->date,
-                'isDone' => $item->done,
+                'id'          => $item->id,
+                'assigned'    => $item->assigned,
+                'date'        => $item->date,
+                'isDone'      => $item->done,
                 'description' => $item->activity,
             ];
         });
@@ -101,10 +103,10 @@ Route::get('tareas/{id}/mostrar', function ($id) {
     $item = Activity::find($id);
 
     return [
-        'id' => $item->id,
-        'assigned' => $item->assigned,
-        'date' => $item->date,
-        'favorite' => $item->done,
+        'id'          => $item->id,
+        'assigned'    => $item->assigned,
+        'date'        => $item->date,
+        'favorite'    => $item->done,
         'description' => $item->activity,
     ];
 });
@@ -134,7 +136,7 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
 
     if ($anime == null) {
         Favorite::create([
-            'codigo' => $code,
+            'codigo'   => $code,
             'anime_id' => $id,
         ]);
 
@@ -165,6 +167,87 @@ Route::get('animes', function (Request $request) {
     return $query->get();
 });
 
+Route::get('{code}/frutas', function (Request $request, $code) {
+    $query = Fruta::where('codigo', $code);
+
+    return $query->get();
+});
+
+Route::post('{codigo}/frutas/crear', function (Request $request, $codigo) {
+    $model = Fruta::create([
+        'nombre'    => $request->get('nombre'),
+        'vitaminas' => $request->get('vitaminas'),
+        'codigo'    => $codigo,
+        'me_gusta'  => false,
+    ]);
+
+    return $model;
+});
+
+Route::post('{code}/frutas/{fruta_id}/megusta', function (Request $request, $code, $fruta_id) {
+    $model = Fruta::find($fruta_id);
+
+    $model->me_gusta = !$model->me_gusta;
+
+    $model->save();
+
+    return $model;
+});
+
+
+Route::get('entrenador/{code}', function (Request $request, $code) {
+    $entrenador = Entrenador::where('codigo', $code)->first();
+    if ($entrenador == null)
+        return ['success' => false, 'message' => 'Entrenador no existe'];
+
+    return $entrenador;
+});
+
+Route::post('entrenador/{code}', function (Request $request, $code) {
+
+    function saveImage(Request $request)
+    {
+        $base64_image = $request->imagen;
+        $imageName = str_random(10) . '.' . 'png';
+        $path = '/img/' . $imageName;
+        $data = $base64_image;
+        $data = base64_decode($data);
+        File::put(public_path($path), $data);
+
+        return $path;
+    }
+
+
+    $model = Entrenador::create([
+        'nombres' => $request->nombres,
+        'codigo'  => $code,
+        'imagen'  => saveImage($request),
+        'pueblo'  => $request->pueblo
+    ]);
+
+    return $model;
+});
+
+Route::get('entrenador/{code}/pokemones', function (Request $request, $code) {
+    $entrenador = Entrenador::where('codigo', $code)->first();
+
+    return $entrenador->pokemones;
+});
+
+Route::post('entrenador/{code}/pokemon', function (Request $request, $code) {
+    $entrenador = Entrenador::where('codigo', $code)->first();
+
+    $entrenador->pokemones()->attach($request->pokemon_id);
+
+    return ['sucess' => true];
+});
+
+Route::get('pokemones', function () {
+    $query = Pokemon::with('ubicaciones');
+
+    return $query->get();
+});
+
 Route::get('pokemons/{code}', function (Request $request, $code) {
     $query = Pokemon::where('codigo', $code);
 
@@ -179,10 +262,10 @@ Route::get('pokemons/{code}/atrapados', function (Request $request, $code) {
 
 Route::post('pokemons/{code}/crear', function (Request $request, $code) {
     $model = Pokemon::create([
-        'codigo' => $code,
-        'nombre' => $request->get('nombre'),
-        'tipo' => $request->get('tipo'),
-        'url_imagen' => $request->get('url_imagen'),
+        'codigo'        => $code,
+        'nombre'        => $request->get('nombre'),
+        'tipo'          => $request->get('tipo'),
+        'url_imagen'    => $request->get('url_imagen'),
         'esta_atrapado' => false,
     ]);
 
@@ -194,33 +277,6 @@ Route::post('pokemons/{code}/crear', function (Request $request, $code) {
 Route::post('pokemons/{code}/atrapar/{pokemon}', function (Request $request, $code, $pokemon) {
     $model = Pokemon::find($pokemon);
     $model->esta_atrapado = !$model->esta_atrapado;
-
-    $model->save();
-
-    return $model;
-});
-
-Route::get('{code}/frutas', function (Request $request, $code) {
-    $query = Fruta::where('codigo', $code);
-
-    return $query->get();
-});
-
-Route::post('{codigo}/frutas/crear', function (Request $request, $codigo) {
-    $model = Fruta::create([
-        'nombre' => $request->get('nombre'),
-        'vitaminas' => $request->get('vitaminas'),
-        'codigo' => $codigo,
-        'me_gusta' => false,
-    ]);
-
-    return $model;
-});
-
-Route::post('{code}/frutas/{fruta_id}/megusta', function (Request $request, $code, $fruta_id) {
-    $model = Fruta::find($fruta_id);
-
-    $model->me_gusta = !$model->me_gusta;
 
     $model->save();
 

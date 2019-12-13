@@ -27,5 +27,6 @@ class CreateLibroTable extends Migration
      */
     public function down()
     {
+        Schema::drop('libros');
     }
 }

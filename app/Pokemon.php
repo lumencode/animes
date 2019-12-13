@@ -4,13 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Pokemon extends Model
 {
-    public $table = 'pokemon';
+    public $table = 'pokemones';
     public $guarded = [];
     public $timestamps = false;
 
-    public $casts = [
-        "esta_atrapado" => "boolean"
-    ];
+    public function ubicaciones()
+    {
+        return $this->hasMany(Ubicacion::class);
+    }
+
+    public function getImagenAttribute($value)
+    {
+        return url($value);
+    }
 }
