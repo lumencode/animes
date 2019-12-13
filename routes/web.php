@@ -243,9 +243,15 @@ Route::post('entrenador/{code}/pokemon', function (Request $request, $code) {
 });
 
 Route::get('pokemones', function () {
-    $query = Pokemon::with('ubicaciones');
+    $query = Pokemon::query();
 
     return $query->get();
+});
+
+Route::get('pokemones/{id}', function ($id) {
+    $query = Pokemon::where('id', $id)->with('ubicaciones');
+
+    return $query->first();
 });
 
 Route::get('pokemons/{code}', function (Request $request, $code) {
