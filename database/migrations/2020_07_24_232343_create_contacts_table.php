@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEntrenadoresTable extends Migration
+class CreateContactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateEntrenadoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('entrenadores', function (Blueprint $table) {
+        Schema::create('contacts', function($table) {
             $table->increments('id');
-            $table->string('codigo')->unique();
-            $table->string('nombres');
-            $table->string('imagen');
-            $table->string('pueblo');
-            $table->timestamps();
+            $table->string('code');
+            $table->string('names');
+            $table->string('email');
+            $table->string('phone');
+            $table->text('image')->nullable();
         });
     }
 
@@ -30,6 +30,6 @@ class CreateEntrenadoresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('entrenadores');
+        Schema::drop('contacts');
     }
 }

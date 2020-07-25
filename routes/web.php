@@ -12,7 +12,9 @@
 */
 
 use App\Activity;
+use App\Address;
 use App\Anime;
+use App\Contact;
 use App\Entrenador;
 use App\Favorite;
 use App\Fruta;
@@ -287,4 +289,38 @@ Route::post('pokemons/{code}/atrapar/{pokemon}', function (Request $request, $co
     $model->save();
 
     return $model;
+});
+
+Route::get('{code}/contacts', function (Request $request, $code) {
+    return Contact::with('address')->where('code', $code)->get();
+});
+
+Route::post('{code}/contacts', function (Request $request, $code) {
+
+    $contact = Contact::create([
+        'code'  => $code,
+        'names' => $request->get('names'),
+        'email' => $request->get('email'),
+        'phone' => $request->get('phone'),
+        'image' => $request->get('image'),
+    ]);
+
+    $contact->save();
+
+    return $contact;
+});
+
+
+Route::post('{code}/contacts/{contact_id}/address', function (Request $request, $code, $contact_id) {
+
+    $address = Address::create([
+        'contact_id'  => $contact_id,
+        'address' => $request->get('address'),
+        'latitude' => $request->get('latitude'),
+        'longitude' => $request->get('longitude')
+    ]);
+
+    $address->save();
+
+    return $address;
 });
