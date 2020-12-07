@@ -30,11 +30,11 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
     }
 
     $model = Libro::create([
-        'codigo'            => $codigo,
-        'resumen'           => $request->get('resumen'),
-        'url_imagen'        => $request->get('url_imagen'),
-        'titulo'            => $request->get('titulo'),
-        'autor'             => $request->get('autor'),
+        'codigo' => $codigo,
+        'resumen' => $request->get('resumen'),
+        'url_imagen' => $request->get('url_imagen'),
+        'titulo' => $request->get('titulo'),
+        'autor' => $request->get('autor'),
         'fecha_publicacion' => $request->get('fecha_publicacion'),
     ]);
 
@@ -44,10 +44,10 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
 Route::get('{codigo}/libros', function ($codigo) {
     return Libro::where('codigo', $codigo)->get()->map(function ($item) {
         return [
-            'id'                => $item->id,
-            'titulo'            => $item->titulo,
+            'id' => $item->id,
+            'titulo' => $item->titulo,
             'fecha_publicacion' => $item->fecha_publicacion,
-            'url_imagen'        => $item->url_imagen,
+            'url_imagen' => $item->url_imagen,
         ];
     });
 });
@@ -62,11 +62,11 @@ Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
     }
 
     $model = Pelicula::create([
-        'nombre'           => $request->get('nombre'),
-        'codigo'           => $codigo,
+        'nombre' => $request->get('nombre'),
+        'codigo' => $codigo,
         'fecha_de_estreno' => $request->get('fecha_de_estreno'),
-        'vistas'           => $request->get('vistas'),
-        'imagen_url'       => $request->get('imagen_url'),
+        'vistas' => $request->get('vistas'),
+        'imagen_url' => $request->get('imagen_url'),
     ]);
 
     return $model;
@@ -76,7 +76,7 @@ Route::get('peliculas/{codigo}', 'PeliculaController@index');
 
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
     $model = Activity::create([
-        'date'     => $request->get('date'),
+        'date' => $request->get('date'),
         'activity' => $request->get('description'),
         'assigned' => $codigo,
     ]);
@@ -92,10 +92,10 @@ Route::get('tareas/{assigned}', function ($assigned, Request $request) {
         ->get()
         ->map(function ($item) {
             return [
-                'id'          => $item->id,
-                'assigned'    => $item->assigned,
-                'date'        => $item->date,
-                'isDone'      => $item->done,
+                'id' => $item->id,
+                'assigned' => $item->assigned,
+                'date' => $item->date,
+                'isDone' => $item->done,
                 'description' => $item->activity,
             ];
         });
@@ -105,10 +105,10 @@ Route::get('tareas/{id}/mostrar', function ($id) {
     $item = Activity::find($id);
 
     return [
-        'id'          => $item->id,
-        'assigned'    => $item->assigned,
-        'date'        => $item->date,
-        'favorite'    => $item->done,
+        'id' => $item->id,
+        'assigned' => $item->assigned,
+        'date' => $item->date,
+        'favorite' => $item->done,
         'description' => $item->activity,
     ];
 });
@@ -138,7 +138,7 @@ Route::post('{code}/anime/favorite', function (Request $request, $code) {
 
     if ($anime == null) {
         Favorite::create([
-            'codigo'   => $code,
+            'codigo' => $code,
             'anime_id' => $id,
         ]);
 
@@ -177,10 +177,10 @@ Route::get('{code}/frutas', function (Request $request, $code) {
 
 Route::post('{codigo}/frutas/crear', function (Request $request, $codigo) {
     $model = Fruta::create([
-        'nombre'    => $request->get('nombre'),
+        'nombre' => $request->get('nombre'),
         'vitaminas' => $request->get('vitaminas'),
-        'codigo'    => $codigo,
-        'me_gusta'  => false,
+        'codigo' => $codigo,
+        'me_gusta' => false,
     ]);
 
     return $model;
@@ -222,9 +222,9 @@ Route::post('entrenador/{code}', function (Request $request, $code) {
 
     $model = Entrenador::create([
         'nombres' => $request->nombres,
-        'codigo'  => $code,
-        'imagen'  => saveImage($request),
-        'pueblo'  => $request->pueblo
+        'codigo' => $code,
+        'imagen' => saveImage($request),
+        'pueblo' => $request->pueblo
     ]);
 
     return $model;
@@ -269,11 +269,26 @@ Route::get('pokemons/{code}/atrapados', function (Request $request, $code) {
 });
 
 Route::post('pokemons/{code}/crear', function (Request $request, $code) {
+
+    function saveImage(Request $request)
+    {
+        $base64_image = $request->imagen;
+        $imageName = str_random(10) . '.' . 'png';
+        $path = '/img/' . $imageName;
+        $data = $base64_image;
+        $data = base64_decode($data);
+        File::put(public_path($path), $data);
+
+        return $path;
+    }
+
     $model = Pokemon::create([
-        'codigo'        => $code,
-        'nombre'        => $request->get('nombre'),
-        'tipo'          => $request->get('tipo'),
-        'url_imagen'    => $request->get('url_imagen'),
+        'codigo' => $code,
+        'nombre' => $request->get('nombre'),
+        'tipo' => $request->get('tipo'),
+        'url_imagen' => saveImage($request),
+        'latitude' => $request->latitude,
+        'longitude' => $request->longitude,
         'esta_atrapado' => false,
     ]);
 
@@ -298,7 +313,7 @@ Route::get('{code}/contacts', function (Request $request, $code) {
 Route::post('{code}/contacts', function (Request $request, $code) {
 
     $contact = Contact::create([
-        'code'  => $code,
+        'code' => $code,
         'names' => $request->get('names'),
         'email' => $request->get('email'),
         'phone' => $request->get('phone'),
@@ -314,7 +329,7 @@ Route::post('{code}/contacts', function (Request $request, $code) {
 Route::post('{code}/contacts/{contact_id}/address', function (Request $request, $code, $contact_id) {
 
     $address = Address::create([
-        'contact_id'  => $contact_id,
+        'contact_id' => $contact_id,
         'address' => $request->get('address'),
         'latitude' => $request->get('latitude'),
         'longitude' => $request->get('longitude')

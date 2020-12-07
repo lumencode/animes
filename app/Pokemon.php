@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pokemon extends Model
 {
-    public $table = 'pokemones';
+    public $table = 'pokemon';
     public $guarded = [];
     public $timestamps = false;
 

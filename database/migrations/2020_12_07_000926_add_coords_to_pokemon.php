@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContactsTable extends Migration
+class AddCoordsToPokemon extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateContactsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contacts', function($table) {
-            $table->increments('id');
-            $table->string('code');
-            $table->string('names');
-            $table->string('email');
-            $table->string('phone');
-            $table->longText('image')->nullable();
+        Schema::table('pokemon', function ($table) {
+            $table->decimal('latitude', 10, 8);
+            $table->decimal('longitude', 10, 8);
         });
     }
 
@@ -30,6 +26,8 @@ class CreateContactsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contacts');
+        Schema::table('pokemon', function (Blueprint $table) {
+            $table->dropColumn(['latitude', 'longitude']);
+        });
     }
 }
