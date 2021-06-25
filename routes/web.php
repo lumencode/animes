@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use App\Pelicula;
 use App\Libro;
 use Intervention\Image\Image;
+use PhpParser\Node\Expr\AssignOp\Concat;
 
 Route::post('{codigo}/libros', function (Request $request, $codigo) {
     if ($request->get('titulo') == '') {
@@ -332,10 +333,12 @@ Route::post('{code}/contacts', function (Request $request, $code) {
 });
 
 
-Route::post('{code}/contacts/{contact_id}/address', function (Request $request, $code, $contact_id) {
+Route::post('{code}/contacts/address', function (Request $request, $code) {
+
+    $contact = Concat::where('code', $code)->first();
 
     $address = Address::create([
-        'contact_id' => $contact_id,
+        'contact_id' => $contact->id,
         'address' => $request->get('address'),
         'latitude' => $request->get('latitude'),
         'longitude' => $request->get('longitude')
