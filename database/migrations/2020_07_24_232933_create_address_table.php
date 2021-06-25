@@ -13,11 +13,11 @@ class CreateAddressTable extends Migration
      */
     public function up()
     {
-        Schema::create('address', function(Blueprint $table) {
+        Schema::create('address', function (Blueprint $table) {
             $table->increments('id');
             $table->string('address');
-            $table->decimal('latitude', 10, 10);
-            $table->decimal('longitude', 10, 10);
+            $table->decimal('latitude', 8, 8);
+            $table->decimal('longitude', 8, 8);
             $table->integer('contact_id');
         });
     }
