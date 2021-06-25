@@ -262,10 +262,10 @@ Route::get('pokemons/{code}', function (Request $request, $code) {
     return $query->get();
 });
 
-Route::delete('pokemons/{code}/clean', function(Request $request, $code){
+Route::delete('pokemons/{code}/clean', function (Request $request, $code) {
     Pokemon::where('codigo', $code)->delete();
 
-    return ["message"=>"ok"];
+    return ["message" => "ok"];
 });
 
 Route::get('pokemons/{code}/atrapados', function (Request $request, $code) {
