@@ -335,7 +335,7 @@ Route::post('{code}/contacts', function (Request $request, $code) {
 
 Route::post('{code}/contacts/address', function (Request $request, $code) {
 
-    $contact = Concat::where('code', $code)->first();
+    $contact = Contact::query()->where('code', $code)->first();
 
     $address = Address::create([
         'contact_id' => $contact->id,
