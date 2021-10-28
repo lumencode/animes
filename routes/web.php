@@ -279,6 +279,10 @@ Route::post('pokemons/{code}/crear', function (Request $request, $code) {
 
     function saveImage(Request $request)
     {
+
+        if($request->url_imagen)
+            return $request->url_imagen;
+
         $base64_image = $request->imagen;
         $imageName = str_random(10) . '.' . 'png';
         $path = '/img/' . $imageName;
