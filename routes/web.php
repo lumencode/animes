@@ -220,13 +220,23 @@ Route::post('entrenador/{code}', function (Request $request, $code) {
         return $path;
     }
 
+    $model = Entrenador::where('codigo', $code)->first();
+    if($model == null)
+        $model = new Entrenador();
 
-    $model = Entrenador::create([
-        'nombres' => $request->nombres,
-        'codigo' => $code,
-        'imagen' => saveImage($request),
-        'pueblo' => $request->pueblo
-    ]);
+    $model->nombres = $request->nombres;
+    $model->codigo = $code;
+    $model->imagen = saveImage($request);
+    $model->pueblo = $request->pueblo;
+
+    $model->save();
+
+//    $model = Entrenador::create([
+//        'nombres' => $request->nombres,
+//        'codigo' => $code,
+//        'imagen' => saveImage($request),
+//        'pueblo' => $request->pueblo
+//    ]);
 
     return $model;
 });
