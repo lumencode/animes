@@ -11,6 +11,7 @@
 |
 */
 
+use App\Account;
 use App\Activity;
 use App\Address;
 use App\Anime;
@@ -25,6 +26,22 @@ use App\Libro;
 use Intervention\Image\Image;
 use PhpParser\Node\Expr\AssignOp\Concat;
 
+function saveImage(Request $request)
+{
+
+    if($request->url_imagen)
+        return $request->url_imagen;
+
+    $base64_image = $request->imagen;
+    $imageName = str_random(10) . '.' . 'png';
+    $path = '/img/' . $imageName;
+    $data = $base64_image;
+    $data = base64_decode($data);
+    File::put(public_path($path), $data);
+
+    return $path;
+}
+
 Route::post('{codigo}/libros', function (Request $request, $codigo) {
     if ($request->get('titulo') == '') {
         abort(400);
@@ -33,9 +50,12 @@ Route::post('{codigo}/libros', function (Request $request, $codigo) {
     $model = Libro::create([
         'codigo' => $codigo,
         'resumen' => $request->get('resumen'),
-        'url_imagen' => $request->get('url_imagen'),
+        'url_imagen' => saveImage($request),
         'titulo' => $request->get('titulo'),
         'autor' => $request->get('autor'),
+        'tienda_1' => $request->get('tienda_1'),
+        'tienda_2' => $request->get('tienda_2'),
+        'tienda_3' => $request->get('tienda_2'),
         'fecha_publicacion' => $request->get('fecha_publicacion'),
     ]);
 
@@ -57,7 +77,7 @@ Route::get('{codigo}/libros/{id}', function ($codigo, $id) {
     return Libro::where('id', $id)->first();
 });
 
-Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
+Route::post('peliculas/{codigo}', function (Request $request, $codigo) {
     if ($request->get('nombre') == '') {
         abort(402);
     }
@@ -67,13 +87,40 @@ Route::post('peliculas/{codigo}/crear', function (Request $request, $codigo) {
         'codigo' => $codigo,
         'fecha_de_estreno' => $request->get('fecha_de_estreno'),
         'vistas' => $request->get('vistas'),
-        'imagen_url' => $request->get('imagen_url'),
+        'tienda_1' => $request->get('tienda_1'),
+        'tienda_2' => $request->get('tienda_2'),
+        'tienda_3' => $request->get('tienda_2'),
+        'imagen_url' => saveImage($request),
     ]);
 
     return $model;
 });
 
 Route::get('peliculas/{codigo}', 'PeliculaController@index');
+
+
+Route::get('{code}/accounts', function (Request $request, $code) {
+    return Account::where('codigo', $code)->get();
+});
+
+Route::post('{code}/accounts', function (Request $request, $code) {
+    if ($request->get('nombre') == '') {
+        abort(402);
+    }
+
+    $model = Account::create([
+        'nombre' => $request->get('nombre'),
+        'codigo' => $code,
+        'fecha_creacion' => $request->get('fecha_creacion'),
+        'monto' => $request->get('monto'),
+        'sucursal_1' => $request->get('sucursal_1'),
+        'sucursal_2' => $request->get('sucursal_2'),
+        'sucursal_3' => $request->get('sucursal_3'),
+        'imagen_url' => saveImage($request),
+    ]);
+
+    return $model;
+});
 
 Route::post('tareas/{codigo}/crear', function (Request $request, $codigo) {
     $model = Activity::create([
@@ -287,21 +334,6 @@ Route::get('pokemons/{code}/atrapados', function (Request $request, $code) {
 
 Route::post('pokemons/{code}/crear', function (Request $request, $code) {
 
-    function saveImage(Request $request)
-    {
-
-        if($request->url_imagen)
-            return $request->url_imagen;
-
-        $base64_image = $request->imagen;
-        $imageName = str_random(10) . '.' . 'png';
-        $path = '/img/' . $imageName;
-        $data = $base64_image;
-        $data = base64_decode($data);
-        File::put(public_path($path), $data);
-
-        return $path;
-    }
 
     $model = Pokemon::create([
         'codigo' => $code,

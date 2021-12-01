@@ -15,9 +15,12 @@ class CreateLibroTable extends Migration
             $table->increments('id');
             $table->string('codigo');
             $table->text('resumen');
-            $table->string('url_imagen');
+            $table->text('url_imagen');
             $table->string('titulo');
             $table->string('autor');
+            $table->string('tienda_1')->nullable();
+            $table->string('tienda_2')->nullable();
+            $table->string('tienda_3')->nullable();
             $table->string('fecha_publicacion');
         });
     }
